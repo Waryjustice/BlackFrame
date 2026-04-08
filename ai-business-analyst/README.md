@@ -36,42 +36,41 @@ Arthur AI is a **multi-agent AI system** built for tech companies to streamline 
 **Agent Workflow:**  
 
 ┌───────────────────────────────────────────────┐
-│ DATA SOURCES │
-│ (Financial statements, CRM, ERP, Market) │
+│                 DATA SOURCES                  │
+│ (Financial statements, CRM, ERP, Market)     │
 └─────────────────────────┬─────────────────────┘
-│ Structured & Raw Data
-↓
+                          │ Structured & Raw Data
+                          ▼
 ┌───────────────────────────────────────────────┐
-│ AGENT 1: INTAKE & VALIDATION │
-│ • Collects PDFs, Excel, Forms │
-│ • Checks completeness & data quality │
-│ • Converts to structured JSON/CSV │
+│          AGENT 1: INTAKE & VALIDATION         │
+│ • Collects PDFs, Excel, Forms                 │
+│ • Checks completeness & data quality         │
+│ • Converts to structured JSON/CSV            │
 └───────────────┬──────────────────────────────┘
-↓
+                ▼
 ┌───────────────────────────────────────────────┐
-│ AGENT 2: FINANCIAL PROCESSING │
-│ • Extracts key metrics (Revenue, Profit) │
-│ • Calculates ratios: EBITDA, Margins │
-│ • Structures financial database │
+│         AGENT 2: FINANCIAL PROCESSING         │
+│ • Extracts key metrics (Revenue, Profit)     │
+│ • Calculates ratios: EBITDA, Margins         │
+│ • Structures financial database              │
 └───────────────┬──────────────────────────────┘
-↓
-┌──────────────────────────┬────────────────────┐
-│ AGENT 3: VALUATION │ AGENT 4: RISK │
-│ • DCF Valuation │ • Liquidity Ratios │
-│ • Asset-Based Valuation │ • Debt-to-Equity │
-│ • Comparable Analysis │ • SWOT Analysis │
-└───────────────┬──────────┴──────────────┬─────┘
-↓ ↓
-┌─────────────┐ ┌─────────────┐
-│ AGENT 5: │ │ Decision & │
-│ Competitor │ │ Growth Agent│
-│ Analysis │ │ │
-│ Benchmarks │ │ Combines all│
-│ Industry Avg│ │ outputs, │
-└─────┬───────┘ │ generates │
-↓ │ strategy │
-└─────→ OUTPUT DASHBOARD ←───────┘
-
+                ▼
+┌───────────────────────────┬──────────────────┐
+│       AGENT 3: VALUATION  │    AGENT 4: RISK │
+│ • DCF Valuation           │ • Liquidity Ratios│
+│ • Asset-Based Valuation   │ • Debt-to-Equity │
+│ • Comparable Analysis     │ • SWOT Analysis  │
+└───────────────┬───────────┴──────────────┬───┘
+                ▼                          ▼
+         ┌─────────────┐              ┌─────────────┐
+         │ AGENT 5:    │              │ Decision &  │
+         │ Competitor  │              │ Growth Agent│
+         │ Analysis    │              │             │
+         │ Benchmarks  │              │ Combines all│
+         │ Industry Avg│              │ outputs,    │
+         └─────┬───────┘              │ generates   │
+               ▼                      │ strategy    │
+               └─────────► OUTPUT DASHBOARD ◄───────┘
 
 **Architecture Highlights:**
 - Agents communicate via **structured messaging protocols**
