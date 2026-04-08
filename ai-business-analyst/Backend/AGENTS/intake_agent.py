@@ -8,8 +8,8 @@ def intake_agent(data):
         "equity"
     ]
 
-    # This line must have exactly 4 spaces of indentation
-    missing = [field for field in required_fields if not data.get(field)]
+    # Treat missing keys/None as missing, but allow numeric 0.
+    missing = [field for field in required_fields if field not in data or data.get(field) is None]
 
     if missing:
         return {
