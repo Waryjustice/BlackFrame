@@ -1,21 +1,23 @@
-# finance_agent.py
 from typing import Dict
 
 def analyze_financials(data: Dict):
-    balance = data.get("balance_sheet", {})
-    pl = data.get("profit_loss", {})
-    cash = data.get("cash_flow", {})
+    # main.py sends flattened data, so we grab keys directly
+    revenue = data.get("revenue", 0)
+    expenses = data.get("expenses", 0)
+    assets = data.get("assets", 0)
+    liabilities = data.get("liabilities", 0)
+    equity = data.get("equity", 0)
+    debt = data.get("debt", 0)
 
-    # Key metrics
-    ebitda = pl.get("revenue", 0) - pl.get("expenses", 0)
-    net_profit_margin = ebitda / pl.get("revenue", 1)
-    debt_to_equity = balance.get("liabilities", 0) / cash.get("equity", 1)
-    current_ratio = balance.get("assets", 0) / balance.get("liabilities", 1)
+    # Key Metrics
+    ebitda = revenue - expenses
+    net_profit_margin = (ebitda / revenue) if revenue != 0 else 0
+    debt_to_equity = (debt / equity) if equity != 0 else 0
+    current_ratio = (assets / liabilities) if liabilities != 0 else 0
 
-    # Return structured results
     return {
-        "EBITDA": ebitda,
-        "NetProfitMargin": round(net_profit_margin, 2),
-        "DebtToEquity": round(debt_to_equity, 2),
-        "CurrentRatio": round(current_ratio, 2)
+        "ebitda": ebitda,
+        "net_profit_margin": round(net_profit_margin, 2),
+        "debt_to_equity": round(debt_to_equity, 2),
+        "current_ratio": round(current_ratio, 2)
     }
