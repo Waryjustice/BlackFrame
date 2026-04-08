@@ -70,7 +70,7 @@ curl http://localhost:8000/session/{session_id}
 This project is preconfigured for Vercel with:
 - `api/index.py` (FastAPI entrypoint)
 - `vercel.json` (routing all paths to FastAPI)
-- root `requirements.txt` (points to `Backend/requirements.txt`)
+- root `requirements.txt` (Cloud/serverless install target)
 
 ### Vercel setup steps
 1. Import your GitHub repo in Vercel.
@@ -83,6 +83,46 @@ This project is preconfigured for Vercel with:
 ### Notes for serverless
 - `POST /upload` is the primary endpoint and returns full analysis.
 - `/session/{session_id}` uses in-memory storage and is not durable across serverless cold starts.
+
+---
+
+## ☁️ Deploy on Google Cloud Run
+
+This project is now Cloud Run-ready with:
+- `Dockerfile` at `ai-business-analyst/`
+- `.dockerignore` to reduce build context
+- FastAPI runtime command targeting `Backend.main:app`
+
+### One-time setup
+```bash
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+```
+
+### Build image
+```bash
+cd ai-business-analyst
+gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/blackframe-api
+```
+
+### Deploy service
+```bash
+gcloud run deploy blackframe-api \
+  --image gcr.io/YOUR_PROJECT_ID/blackframe-api \
+  --region us-central1 \
+  --platform managed \
+  --allow-unauthenticated \
+  --set-env-vars GOOGLE_API_KEY=YOUR_GEMINI_KEY,CORS_ORIGINS=https://arthur-insight-ai.lovable.app
+```
+
+### Verify
+```bash
+curl https://YOUR_CLOUD_RUN_URL/
+curl https://YOUR_CLOUD_RUN_URL/docs
+```
+
+> Hackathon tip: render `/upload` response directly in frontend; avoid relying on `/session/{id}` in autoscaled/serverless demos.
 
 ---
 
