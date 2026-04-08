@@ -4,23 +4,44 @@ import json
 import re
 from io import BytesIO
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any
 from dotenv import load_dotenv
 import google.generativeai as genai
 from pypdf import PdfReader
 
 # --- AGENT IMPORTS ---
-# These pull the logic from the files in your AGENTS folder
-from AGENTS.intake_agent import intake_agent
-from AGENTS.finance_agent import analyze_financials
-from AGENTS.Valution import valuation_agent
-from AGENTS.risk_agent import risk_agent
-from AGENTS.strategy_agent import generate_strategy
+# Local runs use AGENTS.*, Vercel imports Backend.main and needs Backend.AGENTS.*.
+try:
+    from AGENTS.intake_agent import intake_agent
+    from AGENTS.finance_agent import analyze_financials
+    from AGENTS.Valution import valuation_agent
+    from AGENTS.risk_agent import risk_agent
+    from AGENTS.strategy_agent import generate_strategy
+except ModuleNotFoundError:
+    from Backend.AGENTS.intake_agent import intake_agent
+    from Backend.AGENTS.finance_agent import analyze_financials
+    from Backend.AGENTS.Valution import valuation_agent
+    from Backend.AGENTS.risk_agent import risk_agent
+    from Backend.AGENTS.strategy_agent import generate_strategy
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 app = FastAPI(title="AI Business Analyst - Multi-Agent System")
+
+cors_origins_env = os.getenv("CORS_ORIGINS", "*")
+cors_origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+if not cors_origins:
+    cors_origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Simple In-Memory Session Storage for Hackathon
 sessions: Dict[str, dict] = {}

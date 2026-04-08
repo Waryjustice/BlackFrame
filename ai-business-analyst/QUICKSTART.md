@@ -65,6 +65,27 @@ curl http://localhost:8000/session/{session_id}
 
 ---
 
+## ☁️ Deploy on Vercel (Free Hobby)
+
+This project is preconfigured for Vercel with:
+- `api/index.py` (FastAPI entrypoint)
+- `vercel.json` (routing all paths to FastAPI)
+- root `requirements.txt` (points to `Backend/requirements.txt`)
+
+### Vercel setup steps
+1. Import your GitHub repo in Vercel.
+2. If your repo root is `BlackFrame`, set **Root Directory** to `ai-business-analyst`.
+3. Add environment variables:
+   - `GOOGLE_API_KEY`
+   - `CORS_ORIGINS` (example: `https://your-frontend.vercel.app`)
+4. Deploy.
+
+### Notes for serverless
+- `POST /upload` is the primary endpoint and returns full analysis.
+- `/session/{session_id}` uses in-memory storage and is not durable across serverless cold starts.
+
+---
+
 ## 📊 What the System Does
 
 Arthur AI analyzes financial documents through a 5-agent pipeline:
